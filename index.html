@@ -694,11 +694,6 @@
             box-shadow: 0 5px 18px rgba(37,99,235,0.35);
         }
 
-        .cta-btn:disabled {
-            opacity: 0.6;
-            cursor: not-allowed;
-        }
-
         /* CONTACT FORM */
         .contact-form {
             display: flex;
@@ -743,53 +738,9 @@
             background: rgba(59,130,246,0.045);
         }
 
-        .form-input[aria-invalid="true"] {
-            border-color: #ff5f57;
-            background: rgba(255, 95, 87, 0.05);
-        }
-
         textarea.form-input {
             resize: none;
             height: 78px;
-            font-family: 'Inter', sans-serif;
-        }
-
-        /* FORM FEEDBACK */
-        .form-feedback {
-            font-size: 0.58rem;
-            color: #ff5f57;
-            display: none;
-            margin-top: 0.15rem;
-        }
-
-        .form-feedback.show {
-            display: block;
-        }
-
-        .form-message {
-            padding: 0.68rem;
-            border-radius: 7px;
-            font-size: 0.68rem;
-            font-weight: 700;
-            margin-bottom: 0.75rem;
-            text-align: center;
-            display: none;
-        }
-
-        .form-message.show {
-            display: block;
-        }
-
-        .form-message.success {
-            background: rgba(74, 222, 128, 0.15);
-            color: #4ade80;
-            border: 1px solid rgba(74, 222, 128, 0.3);
-        }
-
-        .form-message.error {
-            background: rgba(255, 95, 87, 0.15);
-            color: #ff5f57;
-            border: 1px solid rgba(255, 95, 87, 0.3);
         }
 
         /* TERMINAL */
@@ -1046,266 +997,1479 @@
                 grid-template-columns: 1fr;
             }
         }
+
+        @media (max-width: 480px) {
+            .monitor-frame {
+                width: 97vw !important;
+                height: 68vw !important;
+                min-height: 255px;
+            }
+            
+            .desktop-icons {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
     </style>
 </head>
 <body>
-    <!-- LOADING SCREEN -->
-    <div id="loading-screen">
-        <div class="loading-logo">NAROCTA</div>
-        <div class="loading-subtitle">BOOTING SYSTEM</div>
-        <div class="loading-bar-container">
-            <div class="loading-bar"></div>
-        </div>
-        <div class="loading-text">initializing...</div>
+
+<!-- Loading Screen -->
+<div id="loading-screen">
+    <div class="loading-logo">NAROCTA</div>
+    <div class="loading-subtitle">DIGITAL • AI • AUTOMATION</div>
+    <div class="loading-bar-container">
+        <div class="loading-bar" id="loading-bar"></div>
+    </div>
+    <div class="loading-text" id="loading-text">Initializing system...</div>
+</div>
+
+<!-- Boot Screen -->
+<div id="boot-screen">
+    <div class="boot-content">
+        <div class="boot-logo">NAROCTA</div>
+        <div class="boot-tagline">DIGITAL INNOVATION STUDIO</div>
+        <div class="boot-lines" id="boot-lines"></div>
+    </div>
+</div>
+
+<!-- Main Canvas -->
+<canvas id="main-canvas"></canvas>
+
+<!-- UI Overlay -->
+<div id="ui-overlay">
+    <div class="top-bar">
+        <a href="#" class="agency-logo">NAROCTA</a>
+        <nav class="top-nav">
+            <a href="#" onclick="openIconWindow('portfolio')">Portfolio</a>
+            <a href="#" onclick="openIconWindow('services')">Services</a>
+            <a href="#" onclick="openIconWindow('contact')">Contact</a>
+        </nav>
+        <button class="mute-btn" id="mute-btn" onclick="toggleMute()">🔊 Sound</button>
     </div>
 
-    <!-- BOOT SCREEN -->
-    <div id="boot-screen">
-        <div class="boot-content">
-            <div class="boot-logo">NAROCTA</div>
-            <div class="boot-tagline">DIGITAL AGENCY OS</div>
-            <div class="boot-lines" id="boot-lines"></div>
+    <div class="left-panel">
+        <div class="agency-tagline">
+            <strong>Narocta Agency</strong>
+            We build powerful digital experiences, intelligent automation systems, and high-performing brands that drive measurable growth.
         </div>
     </div>
 
-    <!-- MAIN CANVAS -->
-    <canvas id="main-canvas"></canvas>
+    <div class="side-panel">
+        <div class="stat-card">
+            <div class="stat-number">150+</div>
+            <div class="stat-label">Projects Delivered</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-number">95%</div>
+            <div class="stat-label">Client Satisfaction</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-number">50+</div>
+            <div class="stat-label">Brands Scaled</div>
+        </div>
+    </div>
 
-    <!-- UI OVERLAY -->
-    <div id="ui-overlay">
-        <!-- TOP BAR -->
-        <div class="top-bar">
-            <a href="#" class="agency-logo">NAROCTA</a>
-            <div class="top-nav">
-                <a href="#services">Services</a>
-                <a href="#contact">Contact</a>
+    <div class="bottom-bar">
+        <div class="bottom-hint"><div class="hint-icon">🖱</div> Drag to rotate</div>
+        <div class="bottom-hint"><div class="hint-icon">⚙</div> Scroll to zoom</div>
+        <div class="bottom-hint"><div class="hint-icon">👆</div> Click monitor to explore</div>
+    </div>
+</div>
+
+<!-- Monitor OS Interface -->
+<div id="monitor-ui">
+    <div class="monitor-frame" id="monitor-frame">
+        <div class="os-desktop" id="os-desktop">
+
+            <!-- Wallpaper Particles -->
+            <div class="wallpaper-particles" id="wallpaper-particles"></div>
+
+            <!-- Menu Bar -->
+            <div class="os-menubar">
+                <div class="os-logo">⬡ NaroctaOS</div>
+                <div class="os-menubar-center">
+                    <span class="os-menu-item">File</span>
+                    <span class="os-menu-item">View</span>
+                    <span class="os-menu-item">Services</span>
+                    <span class="os-menu-item">Help</span>
+                </div>
+                <div class="os-clock" id="os-clock">00:00:00</div>
             </div>
-            <button class="mute-btn" id="mute-btn">🔊 SOUND</button>
-        </div>
 
-        <!-- BOTTOM BAR -->
-        <div class="bottom-bar">
-            <div class="bottom-hint">
-                <div class="hint-icon">?</div>
-                Double-click any icon to open
-            </div>
-        </div>
-    </div>
-
-    <!-- MONITOR FRAME -->
-    <div id="monitor-ui">
-        <div class="monitor-frame">
-            <div class="os-desktop">
-                <div class="wallpaper-particles" id="particles"></div>
-
-                <!-- MENU BAR -->
-                <div class="os-menubar">
-                    <div class="os-logo">OS v1.0</div>
-                    <div class="os-menubar-center">
-                        <div class="os-menu-item">File</div>
-                        <div class="os-menu-item">Edit</div>
-                        <div class="os-menu-item">Help</div>
-                    </div>
-                    <div class="os-clock" id="os-clock">12:00</div>
+            <!-- Desktop Icons -->
+            <div class="desktop-icons" id="desktop-icons">
+                <div class="desktop-icon" onclick="openWindow('webdev')" ondblclick="openWindow('webdev')">
+                    <div class="icon-emoji">🖥</div><div class="icon-label">Web Dev</div>
                 </div>
-
-                <!-- DESKTOP ICONS -->
-                <div class="desktop-icons">
-                    <div class="desktop-icon" data-app="services">
-                        <div class="icon-emoji">💼</div>
-                        <div class="icon-label">Services</div>
-                    </div>
-                    <div class="desktop-icon" data-app="contact">
-                        <div class="icon-emoji">📧</div>
-                        <div class="icon-label">Contact</div>
-                    </div>
+                <div class="desktop-icon" onclick="openWindow('uiux')" ondblclick="openWindow('uiux')">
+                    <div class="icon-emoji">🎨</div><div class="icon-label">UI/UX Design</div>
                 </div>
-
-                <!-- TASKBAR -->
-                <div class="os-taskbar" id="taskbar"></div>
-
-                <!-- SERVICES WINDOW -->
-                <div class="app-window" id="services-window">
-                    <div class="window-titlebar">
-                        <div class="win-btn close"></div>
-                        <div class="win-btn minimize"></div>
-                        <div class="win-btn maximize"></div>
-                        <div class="window-title">Services.exe</div>
-                    </div>
-                    <div class="window-content">
-                        <div class="service-header">
-                            <div class="service-icon-lg">💼</div>
-                            <div>
-                                <div class="service-title">Services</div>
-                                <div class="service-subtitle">AVAILABLE SOLUTIONS</div>
-                            </div>
-                        </div>
-                        <div class="service-description">
-                            We specialize in cutting-edge digital solutions tailored to transform your business.
-                        </div>
-
-                        <div class="section-label">Web Development</div>
-                        <div class="benefits-grid">
-                            <div class="benefit-card">
-                                <div class="benefit-title">Modern Stack</div>
-                                <div class="benefit-text">React, Vue, Node.js, and beyond</div>
-                            </div>
-                            <div class="benefit-card">
-                                <div class="benefit-title">Performance</div>
-                                <div class="benefit-text">Lightning-fast load times</div>
-                            </div>
-                        </div>
-
-                        <div class="section-label">UI/UX Design</div>
-                        <div class="benefits-grid">
-                            <div class="benefit-card">
-                                <div class="benefit-title">Research</div>
-                                <div class="benefit-text">Deep user insights & analysis</div>
-                            </div>
-                            <div class="benefit-card">
-                                <div class="benefit-title">Design</div>
-                                <div class="benefit-text">Beautiful & functional interfaces</div>
-                            </div>
-                        </div>
-
-                        <div class="section-label">Recent Projects</div>
-                        <div class="case-study">
-                            <div class="case-study-name">TechFlow Platform</div>
-                            <div class="case-study-result">↑ 300% Performance Boost</div>
-                        </div>
-                        <div class="case-study">
-                            <div class="case-study-name">Design Overhaul</div>
-                            <div class="case-study-result">↑ 85% User Satisfaction</div>
-                        </div>
-                    </div>
+                <div class="desktop-icon" onclick="openWindow('social')" ondblclick="openWindow('social')">
+                    <div class="icon-emoji">📱</div><div class="icon-label">Social Media</div>
                 </div>
-
-                <!-- CONTACT WINDOW -->
-                <div class="app-window" id="contact-window">
-                    <div class="window-titlebar">
-                        <div class="win-btn close"></div>
-                        <div class="win-btn minimize"></div>
-                        <div class="win-btn maximize"></div>
-                        <div class="window-title">Contact.exe</div>
-                    </div>
-                    <div class="window-content">
-                        <div class="service-header">
-                            <div class="service-icon-lg">📧</div>
-                            <div>
-                                <div class="service-title">Get in Touch</div>
-                                <div class="service-subtitle">LET'S COLLABORATE</div>
-                            </div>
-                        </div>
-
-                        <div class="form-message" id="form-message"></div>
-
-                        <form id="contact-form" class="contact-form">
-                            <div class="form-row">
-                                <div class="form-group">
-                                    <label class="form-label" for="form-name">Name</label>
-                                    <input type="text" id="form-name" name="name" class="form-input" required>
-                                    <span class="form-feedback" id="error-name"></span>
-                                </div>
-                                <div class="form-group">
-                                    <label class="form-label" for="form-email">Email</label>
-                                    <input type="email" id="form-email" name="email" class="form-input" required>
-                                    <span class="form-feedback" id="error-email"></span>
-                                </div>
-                            </div>
-
-                            <div class="form-group">
-                                <label class="form-label" for="form-subject">Subject</label>
-                                <input type="text" id="form-subject" name="subject" class="form-input" required>
-                                <span class="form-feedback" id="error-subject"></span>
-                            </div>
-
-                            <div class="form-group">
-                                <label class="form-label" for="form-message-text">Message</label>
-                                <textarea id="form-message-text" name="message" class="form-input" required></textarea>
-                                <span class="form-feedback" id="error-message"></span>
-                            </div>
-
-                            <button type="submit" class="cta-btn" id="submit-btn">Send Message</button>
-                        </form>
-                    </div>
+                <div class="desktop-icon" onclick="openWindow('seo')" ondblclick="openWindow('seo')">
+                    <div class="icon-emoji">🚀</div><div class="icon-label">SEO</div>
+                </div>
+                <div class="desktop-icon" onclick="openWindow('ai')" ondblclick="openWindow('ai')">
+                    <div class="icon-emoji">🤖</div><div class="icon-label">AI Automation</div>
+                </div>
+                <div class="desktop-icon" onclick="openWindow('content')" ondblclick="openWindow('content')">
+                    <div class="icon-emoji">✍️</div><div class="icon-label">Content</div>
+                </div>
+                <div class="desktop-icon" onclick="openWindow('branding')" ondblclick="openWindow('branding')">
+                    <div class="icon-emoji">🎯</div><div class="icon-label">Branding</div>
+                </div>
+                <div class="desktop-icon" onclick="openWindow('strategy')" ondblclick="openWindow('strategy')">
+                    <div class="icon-emoji">📊</div><div class="icon-label">Strategy</div>
+                </div>
+                <div class="desktop-icon" onclick="openWindow('portfolio')" ondblclick="openWindow('portfolio')">
+                    <div class="icon-emoji">💼</div><div class="icon-label">Portfolio</div>
+                </div>
+                <div class="desktop-icon" onclick="openWindow('contact')" ondblclick="openWindow('contact')">
+                    <div class="icon-emoji">📞</div><div class="icon-label">Contact</div>
+                </div>
+                <div class="desktop-icon" onclick="openWindow('terminal')" ondblclick="openWindow('terminal')">
+                    <div class="icon-emoji">⌨️</div><div class="icon-label">Terminal</div>
+                </div>
+                <div class="desktop-icon" onclick="openWindow('snake')" ondblclick="openWindow('snake')">
+                    <div class="icon-emoji">🐍</div><div class="icon-label">Narocta Snake</div>
                 </div>
             </div>
+
+            <!-- App Windows Container -->
+            <div id="windows-container"></div>
+
+            <!-- Taskbar -->
+            <div class="os-taskbar">
+                <div class="taskbar-app" onclick="openWindow('webdev')" title="Web Dev">🖥</div>
+                <div class="taskbar-app" onclick="openWindow('uiux')" title="Design">🎨</div>
+                <div class="taskbar-app" onclick="openWindow('ai')" title="AI">🤖</div>
+                <div class="taskbar-divider"></div>
+                <div class="taskbar-app" onclick="openWindow('portfolio')" title="Portfolio">💼</div>
+                <div class="taskbar-app" onclick="openWindow('terminal')" title="Terminal">⌨️</div>
+                <div class="taskbar-app" onclick="openWindow('contact')" title="Contact">📞</div>
+                <div class="taskbar-app" onclick="openWindow('snake')" title="Snake">🐍</div>
+            </div>
+
+            <!-- Context Menu -->
+            <div class="context-menu" id="context-menu">
+                <div class="context-item" onclick="closeMonitorUI()">⬡ Return to Desktop</div>
+                <div class="context-sep"></div>
+                <div class="context-item" onclick="openWindow('terminal')">⌨️ Open Terminal</div>
+                <div class="context-item" onclick="openWindow('portfolio')">💼 Open Portfolio</div>
+                <div class="context-item" onclick="openWindow('snake')">🐍 Narocta Snake</div>
+                <div class="context-sep"></div>
+                <div class="context-item" onclick="refreshDesktop()">🔄 Refresh Desktop</div>
+            </div>
+
         </div>
     </div>
+</div>
 
-    <script>
-        // FORMSPREE CONTACT FORM
-        const form = document.getElementById('contact-form');
-        const formMessage = document.getElementById('form-message');
-        const submitBtn = document.getElementById('submit-btn');
+<audio id="boot-sound" preload="auto">
+    <source src="data:audio/wav;base64,UklGRiQAAABXQVZFZm10IBAAAAABAAEARKwAAIhYAQACABAAZGF0YQAAAAA=" type="audio/wav">
+</audio>
 
-        form.addEventListener('submit', async (e) => {
-            e.preventDefault();
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script>
+// ============================================================
+// NAROCTA — Premium Retro PC Digital Agency (Fixed & Optimized)
+// ============================================================
+
+const state = {
+    muted: false,
+    monitorOpen: false,
+    openWindows: new Set(),
+    activeWindow: null,
+    loaded: false,
+    pcMesh: null,
+    time: 0,
+    mouseX: 0,
+    mouseY: 0,
+    targetRotY: 0,
+    targetRotX: 0,
+    currentRotY: 0.12,
+    currentRotX: 0.04,
+    isDragging: false,
+    prevMouseX: 0,
+    prevMouseY: 0,
+    cameraZ: 5.6,
+    targetCameraZ: 5.6,
+    snakeHighScore: parseInt(localStorage.getItem('naroctaSnakeHighScore')) || 0
+};
+
+let scene, camera, renderer, animFrameId;
+let pcGroup, monitorScreen, pointLights = [];
+let isAnimating = false;
+let snakeGame = null;
+
+// SERVICE DATA
+const services = { /* ... (same as before, kept for brevity) */ 
+    webdev: { icon: '🖥', title: 'Website Development', subtitle: 'Full-Stack Digital Solutions', description: 'We architect and develop stunning, high-performance websites that serve as powerful business assets.', benefits: [{ title: 'Lightning Fast', text: 'Sub-2s load times' }, { title: 'Fully Responsive', text: 'Flawless across devices' }, { title: 'SEO Ready', text: 'Built-in optimization' }, { title: 'Scalable', text: 'Grows with your business' }], cases: [{ name: 'LuxeRetail E-Commerce', result: '+340% conversion' }, { name: 'TechCorp SaaS', result: '200K+ users' }], color: '#3B82F6' },
+    uiux: { icon: '🎨', title: 'UI/UX Design', subtitle: 'Human-Centered Design', description: 'We create intuitive, beautiful interfaces that delight users.', benefits: [{ title: 'User Research', text: 'Data-driven decisions' }, { title: 'Brand Consistency', text: 'Design systems at scale' }, { title: 'Accessibility', text: 'WCAG 2.1 AA' }, { title: 'Conversion', text: 'Engineered to convert' }], cases: [{ name: 'FinTech App', result: '+85% engagement' }, { name: 'Healthcare Dashboard', result: '60% faster tasks' }], color: '#60A5FA' },
+    social: { icon: '📱', title: 'Social Media Marketing', subtitle: 'Strategic Social Growth', description: 'Comprehensive social media strategies that build communities.', benefits: [{ title: 'Content Strategy', text: 'Platform-specific' }, { title: 'Community', text: 'Authentic engagement' }, { title: 'Paid Social', text: 'ROI-optimized' }, { title: 'Analytics', text: 'Real-time insights' }], cases: [{ name: 'Fashion Brand', result: '500K followers' }, { name: 'B2B Lead Gen', result: '12x ROI' }], color: '#06b6d4' },
+    seo: { icon: '🚀', title: 'SEO Optimization', subtitle: 'Dominate Search Rankings', description: 'Data-driven SEO strategies for sustainable organic growth.', benefits: [{ title: 'Technical SEO', text: 'Core Web Vitals' }, { title: 'Content SEO', text: 'Authority building' }, { title: 'Link Building', text: 'High-quality backlinks' }, { title: 'Local SEO', text: 'Dominate local' }], cases: [{ name: 'Legal Firm', result: '#1 rankings' }, { name: 'E-Commerce', result: '+280% traffic' }], color: '#22c55e' },
+    ai: { icon: '🤖', title: 'AI Automation', subtitle: 'Intelligent Business Solutions', description: 'Cutting-edge AI solutions that automate tasks and create advantages.', benefits: [{ title: 'Process Automation', text: 'Eliminate repetitive tasks' }, { title: 'AI Chatbots', text: '24/7 support' }, { title: 'Data Analysis', text: 'Predictive insights' }, { title: 'Content AI', text: 'AI generation' }], cases: [{ name: 'Insurance Co.', result: '70% cost reduction' }, { name: 'Retail Chain', result: '$2M saved' }], color: '#c084fc' },
+    content: { icon: '✍️', title: 'Content Creation', subtitle: 'Stories That Convert', description: 'Compelling content that tells your brand story and drives conversions.', benefits: [{ title: 'Blog & Articles', text: 'SEO-optimized' }, { title: 'Video Content', text: 'Scripts & production' }, { title: 'Email Marketing', text: 'Nurture sequences' }, { title: 'Copywriting', text: 'High-converting' }], cases: [{ name: 'SaaS Blog', result: '3x inbound leads' }, { name: 'E-Learning', result: '95% open rate' }], color: '#fb923c' },
+    branding: { icon: '🎯', title: 'Branding & Identity', subtitle: 'Brands That Endure', description: 'Comprehensive brand identities that capture your essence.', benefits: [{ title: 'Logo Design', text: 'Timeless marks' }, { title: 'Brand Guidelines', text: 'Comprehensive docs' }, { title: 'Visual Identity', text: 'Cohesive touchpoints' }, { title: 'Brand Strategy', text: 'Positioning' }], cases: [{ name: 'Startup Rebrand', result: '200% recognition' }, { name: 'Corporate', result: '5 new markets' }], color: '#f97316' },
+    strategy: { icon: '📊', title: 'Digital Strategy', subtitle: 'Data-Driven Growth', description: 'Comprehensive digital strategies aligned with business objectives.', benefits: [{ title: 'Market Analysis', text: 'Competitive intel' }, { title: 'Growth Roadmap', text: 'Phased execution' }, { title: 'KPI Framework', text: 'Metrics-driven' }, { title: 'Digital Audit', text: 'Complete assessment' }], cases: [{ name: 'Healthcare', result: '35% market share' }, { name: 'Financial', result: '450% revenue' }], color: '#38bdf8' }
+};
+
+// THREE.JS
+function initThreeJS() {
+    const canvas = document.getElementById('main-canvas');
+    const W = window.innerWidth;
+    const H = window.innerHeight;
+
+    scene = new THREE.Scene();
+    scene.background = new THREE.Color(0x080810);
+    scene.fog = new THREE.FogExp2(0x080810, 0.032);
+
+    camera = new THREE.PerspectiveCamera(44, W / H, 0.1, 100);
+    camera.position.set(0, 0.3, 5.6);
+    camera.lookAt(0, 0, 0);
+
+    renderer = new THREE.WebGLRenderer({ 
+        canvas, 
+        antialias: true, 
+        alpha: false,
+        powerPreference: "high-performance"
+    });
+    renderer.setSize(W, H);
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    renderer.shadowMap.enabled = true;
+    renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+    renderer.toneMapping = THREE.ACESFilmicToneMapping;
+    renderer.toneMappingExposure = 1.25;
+
+    // LIGHTING
+    const ambient = new THREE.AmbientLight(0x111122, 0.4);
+    scene.add(ambient);
+
+    const keyLight = new THREE.DirectionalLight(0xffffff, 2.4);
+    keyLight.position.set(5, 8, 5);
+    keyLight.castShadow = true;
+    keyLight.shadow.mapSize.width = 1536;
+    keyLight.shadow.mapSize.height = 1536;
+    keyLight.shadow.camera.near = 0.1;
+    keyLight.shadow.camera.far = 30;
+    scene.add(keyLight);
+
+    const fillLight = new THREE.DirectionalLight(0x2244aa, 0.75);
+    fillLight.position.set(-5, 3, -3);
+    scene.add(fillLight);
+
+    const rimLight = new THREE.DirectionalLight(0x2563eb, 0.55);
+    rimLight.position.set(0, -2, -5);
+    scene.add(rimLight);
+
+    const monGlow = new THREE.PointLight(0x3b82f6, 1.6, 9);
+    monGlow.position.set(0, 0.3, 1.5);
+    scene.add(monGlow);
+    pointLights.push(monGlow);
+
+    const floorLight = new THREE.PointLight(0x3b82f6, 0.75, 7);
+    floorLight.position.set(0, -3, 1);
+    scene.add(floorLight);
+    pointLights.push(floorLight);
+
+    buildRetroPCWorkstation();
+    buildEnvironment();
+    buildAmbientParticles();
+    setupEventListeners();
+
+    isAnimating = true;
+    renderLoop();
+}
+
+function buildRetroPCWorkstation() {
+    pcGroup = new THREE.Group();
+    scene.add(pcGroup);
+
+    const beigeMat = new THREE.MeshStandardMaterial({ color: 0xd4c5a0, roughness: 0.72, metalness: 0.05 });
+    const darkBeigeMat = new THREE.MeshStandardMaterial({ color: 0xb0a080, roughness: 0.75, metalness: 0.05 });
+    const darkMat = new THREE.MeshStandardMaterial({ color: 0x1a1a2e, roughness: 0.3, metalness: 0.6 });
+    const metalMat = new THREE.MeshStandardMaterial({ color: 0x888899, roughness: 0.2, metalness: 0.9 });
+
+    // Desk
+    const desk = new THREE.Mesh(new THREE.BoxGeometry(8, 0.12, 4), new THREE.MeshStandardMaterial({ color: 0x1a0f05, roughness: 0.2 }));
+    desk.position.set(0, -1.5, 0.5);
+    desk.receiveShadow = true;
+    pcGroup.add(desk);
+
+    // Legs
+    const legMat = new THREE.MeshStandardMaterial({ color: 0x333344, roughness: 0.3, metalness: 0.7 });
+    [[-3.2, -2.5], [-3.2, -0.5], [3.2, -2.5], [3.2, -0.5]].forEach(([x, z]) => {
+        const leg = new THREE.Mesh(new THREE.BoxGeometry(0.12, 2, 0.12), legMat);
+        leg.position.set(x, -2.5, z);
+        leg.castShadow = true;
+        pcGroup.add(leg);
+    });
+
+    buildMonitor(beigeMat, darkBeigeMat, darkMat, metalMat);
+    buildCPUTower(beigeMat, darkBeigeMat, metalMat);
+    buildKeyboard(beigeMat, darkMat);
+    buildMouse(beigeMat, darkMat);
+    buildSpeakers(darkMat, metalMat);
+    buildCables();
+    buildMug(metalMat);
+    buildBooks();
+
+    state.pcMesh = pcGroup;
+}
+
+function buildMonitor(beigeMat, darkBeigeMat, darkMat, metalMat) {
+    const monGroup = new THREE.Group();
+    pcGroup.add(monGroup);
+
+    // Housing
+    const housing = new THREE.Mesh(new THREE.BoxGeometry(2.8, 2.1, 0.5), beigeMat);
+    housing.position.set(0, 0.6, 0);
+    housing.castShadow = true;
+    housing.receiveShadow = true;
+    monGroup.add(housing);
+
+    // Bezel
+    const bezel = new THREE.Mesh(new THREE.BoxGeometry(2.6, 1.95, 0.06), new THREE.MeshStandardMaterial({ color: 0x111118, roughness: 0.4 }));
+    bezel.position.set(0, 0.6, 0.26);
+    monGroup.add(bezel);
+
+    // Screen
+    const screenMat = new THREE.MeshStandardMaterial({ color: 0x0a1628, roughness: 0.05, emissive: 0x0a1628, emissiveIntensity: 0.2 });
+    monitorScreen = new THREE.Mesh(new THREE.PlaneGeometry(2.3, 1.65), screenMat);
+    monitorScreen.position.set(0, 0.65, 0.3);
+    monGroup.add(monitorScreen);
+
+    // Glow layer
+    const glow = new THREE.Mesh(new THREE.PlaneGeometry(2.35, 1.7), new THREE.MeshBasicMaterial({ color: 0x3b82f6, transparent: true, opacity: 0.025 }));
+    glow.position.set(0, 0.65, 0.295);
+    monGroup.add(glow);
+
+    // Glass layer
+    const glass = new THREE.Mesh(new THREE.PlaneGeometry(2.3, 1.65), new THREE.MeshPhysicalMaterial({ transparent: true, opacity: 0.08, roughness: 0, transmission: 0.9 }));
+    glass.position.set(0, 0.65, 0.305);
+    monGroup.add(glass);
+
+    // Neck & Base
+    const neck = new THREE.Mesh(new THREE.CylinderGeometry(0.12, 0.15, 0.6, 12), darkBeigeMat);
+    neck.position.set(0, -0.9, 0.1);
+    monGroup.add(neck);
+
+    const base = new THREE.Mesh(new THREE.CylinderGeometry(0.7, 0.75, 0.1, 20), beigeMat);
+    base.position.set(0, -1.22, 0.2);
+    base.castShadow = true;
+    monGroup.add(base);
+
+    // LED
+    const led = new THREE.Mesh(new THREE.SphereGeometry(0.025, 8, 8), new THREE.MeshBasicMaterial({ color: 0x00ff44 }));
+    led.position.set(0.8, -0.42, 0.27);
+    monGroup.add(led);
+}
+
+function buildCPUTower(beigeMat, darkBeigeMat, metalMat) {
+    const towerGroup = new THREE.Group();
+    towerGroup.position.set(-2.2, -0.6, 0.3);
+    pcGroup.add(towerGroup);
+
+    const tower = new THREE.Mesh(new THREE.BoxGeometry(0.9, 2.2, 1.4), beigeMat);
+    tower.castShadow = true;
+    tower.receiveShadow = true;
+    towerGroup.add(tower);
+
+    // Drive bays
+    for (let i = 0; i < 3; i++) {
+        const bay = new THREE.Mesh(new THREE.BoxGeometry(0.55, 0.1, 0.06), new THREE.MeshStandardMaterial({ color: 0x888880 }));
+        bay.position.set(0, 0.7 - i * 0.15, 0.76);
+        towerGroup.add(bay);
+    }
+
+    const pwrLed = new THREE.Mesh(new THREE.SphereGeometry(0.015, 6, 6), new THREE.MeshBasicMaterial({ color: 0x00ff44 }));
+    pwrLed.position.set(0.12, -0.5, 0.78);
+    towerGroup.add(pwrLed);
+}
+
+function buildKeyboard(beigeMat, darkMat) {
+    const kbGroup = new THREE.Group();
+    kbGroup.position.set(0.3, -1.45, 1.5);
+    kbGroup.rotation.x = -0.05;
+    pcGroup.add(kbGroup);
+
+    const kb = new THREE.Mesh(new THREE.BoxGeometry(2.2, 0.06, 0.75), beigeMat);
+    kb.castShadow = true;
+    kb.receiveShadow = true;
+    kbGroup.add(kb);
+}
+
+function buildMouse(beigeMat, darkMat) {
+    const mouseGroup = new THREE.Group();
+    mouseGroup.position.set(1.5, -1.44, 1.5);
+    pcGroup.add(mouseGroup);
+
+    const mouseBody = new THREE.Mesh(new THREE.SphereGeometry(0.13, 16, 12), new THREE.MeshStandardMaterial({ color: 0xcec0a0, roughness: 0.5 }));
+    mouseBody.scale.set(1, 0.55, 1.3);
+    mouseBody.castShadow = true;
+    mouseGroup.add(mouseBody);
+}
+
+function buildSpeakers(darkMat, metalMat) {
+    [-1.8, 1.8].forEach(x => {
+        const spGroup = new THREE.Group();
+        spGroup.position.set(x, -0.9, 0.2);
+        pcGroup.add(spGroup);
+
+        const sp = new THREE.Mesh(new THREE.BoxGeometry(0.35, 1.0, 0.35), new THREE.MeshStandardMaterial({ color: 0x222228, roughness: 0.5 }));
+        sp.castShadow = true;
+        spGroup.add(sp);
+    });
+}
+
+function buildCables() {
+    const cableMat = new THREE.MeshStandardMaterial({ color: 0x333333, roughness: 0.9 });
+    
+    const pts = [new THREE.Vector3(-0.8, -0.5, 0.3), new THREE.Vector3(-1.2, -0.8, 0.5), new THREE.Vector3(-1.6, -0.9, 0.3), new THREE.Vector3(-1.9, -1.0, 0.2)];
+    const curve = new THREE.CatmullRomCurve3(pts);
+    pcGroup.add(new THREE.Mesh(new THREE.TubeGeometry(curve, 12, 0.01, 6, false), cableMat));
+}
+
+function buildMug(metalMat) {
+    const mugGroup = new THREE.Group();
+    mugGroup.position.set(2.2, -1.39, 1.2);
+    pcGroup.add(mugGroup);
+
+    const mug = new THREE.Mesh(new THREE.CylinderGeometry(0.1, 0.09, 0.22, 16), new THREE.MeshStandardMaterial({ color: 0x1a1a2e, roughness: 0.3, metalness: 0.6 }));
+    mug.castShadow = true;
+    mugGroup.add(mug);
+}
+
+function buildBooks() {
+    const colors = [0x8B0000, 0x00008B, 0x006400, 0x8B4513];
+    let xOff = -3.5;
+    colors.forEach((color, i) => {
+        const book = new THREE.Mesh(new THREE.BoxGeometry(0.08, 0.6, 0.4), new THREE.MeshStandardMaterial({ color, roughness: 0.8 }));
+        book.position.set(xOff, -1.14, -0.2);
+        book.castShadow = true;
+        pcGroup.add(book);
+        xOff += 0.09;
+    });
+}
+
+function buildEnvironment() {
+    const floor = new THREE.Mesh(new THREE.PlaneGeometry(40, 40), new THREE.MeshStandardMaterial({ color: 0x050508, roughness: 0.1 }));
+    floor.rotation.x = -Math.PI / 2;
+    floor.position.y = -3.5;
+    floor.receiveShadow = true;
+    scene.add(floor);
+
+    const grid = new THREE.GridHelper(20, 30, 0x0a0a20, 0x0a0a18);
+    grid.position.y = -3.49;
+    grid.material.opacity = 0.28;
+    grid.material.transparent = true;
+    scene.add(grid);
+}
+
+function buildAmbientParticles() {
+    const count = 180;
+    const geo = new THREE.BufferGeometry();
+    const pos = new Float32Array(count * 3);
+    const col = new Float32Array(count * 3);
+
+    for (let i = 0; i < count; i++) {
+        pos[i * 3] = (Math.random() - 0.5) * 20;
+        pos[i * 3 + 1] = (Math.random() - 0.5) * 9;
+        pos[i * 3 + 2] = (Math.random() - 0.5) * 14;
+
+        if (Math.random() > 0.6) {
+            col[i * 3] = 0.15; col[i * 3 + 1] = 0.39; col[i * 3 + 2] = 0.92;
+        } else {
+            col[i * 3] = 0.38; col[i * 3 + 1] = 0.65; col[i * 3 + 2] = 0.98;
+        }
+    }
+
+    geo.setAttribute('position', new THREE.BufferAttribute(pos, 3));
+    geo.setAttribute('color', new THREE.BufferAttribute(col, 3));
+
+    const mat = new THREE.PointsMaterial({ size: 0.038, vertexColors: true, transparent: true, opacity: 0.55, blending: THREE.AdditiveBlending });
+    const particles = new THREE.Points(geo, mat);
+    particles.userData.isParticles = true;
+    scene.add(particles);
+}
+
+// EVENT LISTENERS
+function setupEventListeners() {
+    const canvas = document.getElementById('main-canvas');
+
+    canvas.addEventListener('mousedown', onMouseDown);
+    canvas.addEventListener('mousemove', onMouseMove);
+    canvas.addEventListener('mouseup', onMouseUp);
+    canvas.addEventListener('wheel', onWheel);
+    canvas.addEventListener('click', onCanvasClick);
+
+    canvas.addEventListener('touchstart', onTouchStart, { passive: false });
+    canvas.addEventListener('touchmove', onTouchMove, { passive: false });
+    canvas.addEventListener('touchend', onTouchEnd, { passive: false });
+
+    window.addEventListener('resize', onResize);
+    
+    // Prevent context menu on canvas
+    canvas.addEventListener('contextmenu', e => e.preventDefault());
+}
+
+let touchStartX = 0, touchStartY = 0;
+
+function onTouchStart(e) {
+    e.preventDefault();
+    touchStartX = e.touches[0].clientX;
+    touchStartY = e.touches[0].clientY;
+    state.isDragging = true;
+    state.prevMouseX = touchStartX;
+    state.prevMouseY = touchStartY;
+}
+
+function onTouchMove(e) {
+    e.preventDefault();
+    if (!state.isDragging) return;
+    const dx = e.touches[0].clientX - state.prevMouseX;
+    const dy = e.touches[0].clientY - state.prevMouseY;
+    state.targetRotY += dx * 0.0038;
+    state.targetRotX += dy * 0.002;
+    state.targetRotX = Math.max(-0.4, Math.min(0.4, state.targetRotX));
+    state.prevMouseX = e.touches[0].clientX;
+    state.prevMouseY = e.touches[0].clientY;
+}
+
+function onTouchEnd() {
+    state.isDragging = false;
+}
+
+function onMouseDown(e) {
+    state.isDragging = true;
+    state.prevMouseX = e.clientX;
+    state.prevMouseY = e.clientY;
+}
+
+function onMouseMove(e) {
+    state.mouseX = (e.clientX / window.innerWidth) * 2 - 1;
+    state.mouseY = -(e.clientY / window.innerHeight) * 2 + 1;
+
+    if (state.isDragging) {
+        const dx = e.clientX - state.prevMouseX;
+        const dy = e.clientY - state.prevMouseY;
+        state.targetRotY += dx * 0.0028;
+        state.targetRotX += dy * 0.0019;
+        state.targetRotX = Math.max(-0.35, Math.min(0.35, state.targetRotX));
+        state.prevMouseX = e.clientX;
+        state.prevMouseY = e.clientY;
+    }
+}
+
+function onMouseUp() {
+    state.isDragging = false;
+}
+
+function onWheel(e) {
+    state.targetCameraZ += e.deltaY * 0.0028;
+    state.targetCameraZ = Math.max(3.1, Math.min(8.2, state.targetCameraZ));
+}
+
+function onCanvasClick(e) {
+    if (state.monitorOpen) return;
+
+    const raycaster = new THREE.Raycaster();
+    const mouse = new THREE.Vector2(
+        (e.clientX / window.innerWidth) * 2 - 1,
+        -(e.clientY / window.innerHeight) * 2 + 1
+    );
+    raycaster.setFromCamera(mouse, camera);
+
+    if (monitorScreen) {
+        const intersects = raycaster.intersectObject(monitorScreen);
+        if (intersects.length > 0) {
+            openMonitorUI();
+        }
+    }
+}
+
+function onResize() {
+    const W = window.innerWidth;
+    const H = window.innerHeight;
+    camera.aspect = W / H;
+    camera.updateProjectionMatrix();
+    renderer.setSize(W, H);
+    positionMonitorFrame();
+}
+
+// RENDER LOOP
+function renderLoop() {
+    if (!isAnimating) return;
+    animFrameId = requestAnimationFrame(renderLoop);
+
+    state.time += 0.016;
+    const t = state.time;
+
+    // Camera rotation smoothing
+    state.currentRotY += (state.targetRotY - state.currentRotY) * 0.065;
+    state.currentRotX += (state.targetRotX - state.currentRotX) * 0.065;
+
+    if (pcGroup) {
+        if (!state.isDragging) {
+            state.targetRotY += Math.sin(t * 0.09) * 0.0004;
+        }
+        pcGroup.rotation.y = state.currentRotY;
+        pcGroup.rotation.x = state.currentRotX;
+        pcGroup.position.y = Math.sin(t * 0.5) * 0.018;
+    }
+
+    // Camera
+    state.cameraZ += (state.targetCameraZ - state.cameraZ) * 0.055;
+    camera.position.z = state.cameraZ;
+    camera.position.x += (state.mouseX * 0.12 - camera.position.x) * 0.045;
+    camera.position.y += (state.mouseY * 0.07 + 0.28 - camera.position.y) * 0.045;
+    camera.lookAt(0, 0, 0);
+
+    // Monitor glow
+    if (pointLights[0]) {
+        pointLights[0].intensity = 1.35 + Math.sin(t * 1.6) * 0.28;
+    }
+
+    // Particles
+    scene.traverse(obj => {
+        if (obj.userData.isParticles) {
+            obj.rotation.y += 0.00018;
+            obj.rotation.x += 0.0001;
+        }
+    });
+
+    renderer.render(scene, camera);
+}
+
+// MONITOR UI
+function openMonitorUI() {
+    state.monitorOpen = true;
+    state.targetCameraZ = 3.45;
+    state.targetRotY = 0;
+    state.targetRotX = 0;
+
+    const ui = document.getElementById('monitor-ui');
+    ui.classList.add('active');
+
+    positionMonitorFrame();
+    updateClock();
+    if (!window.clockInterval) window.clockInterval = setInterval(updateClock, 1000);
+    buildWallpaperParticles();
+    showNotification('NaroctaOS', 'Welcome to NaroctaOS. Explore our services.');
+
+    document.getElementById('main-canvas').style.pointerEvents = 'none';
+}
+
+function closeMonitorUI() {
+    state.monitorOpen = false;
+    state.targetCameraZ = 5.6;
+
+    const ui = document.getElementById('monitor-ui');
+    ui.classList.remove('active');
+    document.getElementById('main-canvas').style.pointerEvents = 'all';
+    closeAllWindows();
+}
+
+function positionMonitorFrame() {
+    const frame = document.getElementById('monitor-frame');
+    if (!frame) return;
+
+    const W = window.innerWidth;
+    const H = window.innerHeight;
+    
+    let w = Math.min(680, W * 0.88);
+    let h = w * (480 / 680);
+
+    if (h > H * 0.78) {
+        h = H * 0.78;
+        w = h * (680 / 480);
+    }
+
+    frame.style.width = w + 'px';
+    frame.style.height = h + 'px';
+}
+
+function updateClock() {
+    const el = document.getElementById('os-clock');
+    if (!el) return;
+    const now = new Date();
+    el.textContent = `${String(now.getHours()).padStart(2,'0')}:${String(now.getMinutes()).padStart(2,'0')}:${String(now.getSeconds()).padStart(2,'0')}`;
+}
+
+function buildWallpaperParticles() {
+    const container = document.getElementById('wallpaper-particles');
+    if (!container) return;
+    container.innerHTML = '';
+
+    const colors = ['rgba(59,130,246,0.38)', 'rgba(96,165,250,0.28)', 'rgba(37,99,235,0.32)'];
+    for (let i = 0; i < 22; i++) {
+        const p = document.createElement('div');
+        p.className = 'wp-particle';
+        const size = Math.random() * 4.5 + 2.5;
+        p.style.cssText = `width:${size}px;height:${size}px;background:${colors[Math.floor(Math.random()*colors.length)]};left:${Math.random()*100}%;bottom:0;animation-duration:${7 + Math.random()*13}s;animation-delay:${Math.random()*-14}s`;
+        container.appendChild(p);
+    }
+}
+
+// WINDOW MANAGEMENT
+function openWindow(id) {
+    const container = document.getElementById('windows-container');
+
+    // Close previous
+    if (state.activeWindow && state.activeWindow !== id) {
+        const prev = document.getElementById('win-' + state.activeWindow);
+        if (prev) {
+            prev.style.animation = 'windowClose 0.18s forwards';
+            setTimeout(() => prev && prev.remove(), 170);
+        }
+    }
+
+    const existing = document.getElementById('win-' + id);
+    if (existing) existing.remove();
+
+    const win = createWindow(id);
+    container.appendChild(win);
+    state.activeWindow = id;
+    state.openWindows.add(id);
+
+    // Update taskbar
+    document.querySelectorAll('.taskbar-app').forEach(el => el.classList.remove('active'));
+    const taskBtns = document.querySelectorAll('.taskbar-app');
+    taskBtns.forEach(btn => {
+        if (btn.getAttribute('title') && btn.getAttribute('title').toLowerCase().includes(id)) {
+            btn.classList.add('active');
+        }
+    });
+}
+
+function closeWindow(id) {
+    const win = document.getElementById('win-' + id);
+    if (win) {
+        win.style.animation = 'windowClose 0.18s forwards';
+        setTimeout(() => {
+            if (win.parentNode) win.parentNode.removeChild(win);
+            state.openWindows.delete(id);
+            if (state.activeWindow === id) state.activeWindow = null;
+        }, 170);
+    }
+}
+
+function closeAllWindows() {
+    document.getElementById('windows-container').innerHTML = '';
+    state.openWindows.clear();
+    state.activeWindow = null;
+    document.querySelectorAll('.taskbar-app').forEach(el => el.classList.remove('active'));
+}
+
+function createWindow(id) {
+    const win = document.createElement('div');
+    win.id = 'win-' + id;
+    win.className = 'app-window open';
+
+    let title = '';
+    let content = '';
+
+    if (services[id]) {
+        title = services[id].title;
+        content = createServiceContent(services[id]);
+    } else if (id === 'portfolio') {
+        title = '💼 Portfolio';
+        content = createPortfolioContent();
+    } else if (id === 'contact') {
+        title = '📞 Contact Us';
+        content = createContactContent();
+    } else if (id === 'terminal') {
+        title = '⌨️ Terminal — NaroctaOS';
+        content = createTerminalContent();
+    } else if (id === 'services') {
+        title = '⚙️ All Services';
+        content = createServicesContent();
+    } else if (id === 'snake') {
+        title = '🐍 Narocta Snake';
+        content = createSnakeContent();
+    }
+
+    win.innerHTML = `
+        <div class="window-titlebar">
+            <div class="win-btn close" onclick="closeWindow('${id}')"></div>
+            <div class="win-btn minimize"></div>
+            <div class="win-btn maximize"></div>
+            <div class="window-title">${title}</div>
+        </div>
+        <div class="window-content">${content}</div>
+    `;
+
+    // Initialize Formspree form when contact window opens
+    if (id === 'contact') {
+        setTimeout(() => {
+            setupContactForm();
+        }, 120);
+    }
+
+    return win;
+}
+
+function createServiceContent(svc) {
+    const benefits = svc.benefits.map(b => `<div class="benefit-card"><div class="benefit-title">${b.title}</div><div class="benefit-text">${b.text}</div></div>`).join('');
+    const cases = svc.cases.map(c => `<div class="case-study"><div class="case-study-name">${c.name}</div><div class="case-study-result">▲ ${c.result}</div></div>`).join('');
+
+    return `
+        <div class="service-header">
+            <div class="service-icon-lg">${svc.icon}</div>
+            <div>
+                <div class="service-title">${svc.title}</div>
+                <div class="service-subtitle">${svc.subtitle}</div>
+            </div>
+        </div>
+        <div class="glass-divider"></div>
+        <p class="service-description">${svc.description}</p>
+        <div class="section-label">Key Benefits</div>
+        <div class="benefits-grid">${benefits}</div>
+        <div class="section-label">Case Studies</div>
+        ${cases}
+        <button class="cta-btn" onclick="openWindow('contact')">Book A Free Strategy Call →</button>
+    `;
+}
+
+function createPortfolioContent() {
+    const projects = [
+        { name: 'Aether AI Platform', tag: 'AI', emoji: '🧠', bg: 'linear-gradient(135deg, #0a1a2e, #1a2a4e)' },
+        { name: 'Vanguard E-Commerce', tag: 'Web', emoji: '🛍️', bg: 'linear-gradient(135deg, #1a0a2e, #2a1a4e)' },
+        { name: 'Lumina Dashboard', tag: 'UI/UX', emoji: '📊', bg: 'linear-gradient(135deg, #0a2e2e, #1a4e4e)' },
+        { name: 'Nexus Brand', tag: 'Branding', emoji: '🎯', bg: 'linear-gradient(135deg, #2e1a0a, #4e2a1a)' },
+        { name: 'Pulse Social', tag: 'Social', emoji: '📱', bg: 'linear-gradient(135deg, #0a1a3a, #1a3a5e)' },
+        { name: 'Quantum SEO', tag: 'SEO', emoji: '🚀', bg: 'linear-gradient(135deg, #0a2e1a, #1a4e2a)' }
+    ];
+
+    const html = projects.map(p => `
+        <div class="portfolio-item">
+            <div class="portfolio-thumb" style="background:${p.bg}">
+                <span style="font-size:1.75rem">${p.emoji}</span>
+            </div>
+            <div class="portfolio-info">
+                <div class="portfolio-name">${p.name}</div>
+                <div class="portfolio-tag">${p.tag}</div>
+            </div>
+        </div>
+    `).join('');
+
+    return `
+        <div class="service-header">
+            <div class="service-icon-lg">💼</div>
+            <div>
+                <div class="service-title">Our Portfolio</div>
+                <div class="service-subtitle">150+ Projects Delivered</div>
+            </div>
+        </div>
+        <div class="glass-divider"></div>
+        <div class="section-label">Featured Case Studies</div>
+        <div class="portfolio-grid">${html}</div>
+        <button class="cta-btn" onclick="openWindow('contact')">Book A Free Strategy Call →</button>
+    `;
+}
+
+function createContactContent() {
+    return `
+        <div class="service-header">
+            <div class="service-icon-lg">📞</div>
+            <div>
+                <div class="service-title">Contact Us</div>
+                <div class="service-subtitle">Let's Build Something Amazing</div>
+            </div>
+        </div>
+        <div class="glass-divider"></div>
+        
+        <!-- Formspree Success/Error Messages -->
+        <div id="form-success" style="display:none; background:rgba(74,222,128,0.1); border:1px solid #4ade80; padding:0.75rem; border-radius:6px; margin-bottom:1rem; color:#4ade80; font-size:0.72rem;">
+            ✓ Thank you! We'll get back to you within 24 hours.
+        </div>
+        
+        <div id="form-error" style="display:none; background:rgba(248,113,113,0.1); border:1px solid #f87171; padding:0.75rem; border-radius:6px; margin-bottom:1rem; color:#f87171; font-size:0.72rem;">
+            Something went wrong. Please try again.
+        </div>
+
+        <form id="contact-form" class="contact-form" action="https://formspree.io/f/mkolgeoe" method="POST">
+            <div class="form-row">
+                <div class="form-group">
+                    <label class="form-label">First Name</label>
+                    <input class="form-input" type="text" name="firstName" placeholder="John" required>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Last Name</label>
+                    <input class="form-input" type="text" name="lastName" placeholder="Doe" required>
+                </div>
+            </div>
             
-            // Clear previous messages & errors
-            formMessage.classList.remove('show', 'success', 'error');
-            document.querySelectorAll('.form-feedback').forEach(el => el.classList.remove('show'));
-            document.querySelectorAll('.form-input').forEach(el => el.removeAttribute('aria-invalid'));
+            <div class="form-group">
+                <label class="form-label">Email Address</label>
+                <input class="form-input" type="email" name="email" placeholder="john@company.com" required>
+            </div>
             
-            // Disable button during submission
-            submitBtn.disabled = true;
-            const originalText = submitBtn.textContent;
-            submitBtn.textContent = 'Sending...';
+            <div class="form-group">
+                <label class="form-label">Company</label>
+                <input class="form-input" type="text" name="company" placeholder="Acme Corp">
+            </div>
+            
+            <div class="form-group">
+                <label class="form-label">Service Needed</label>
+                <select class="form-input" name="service">
+                    <option>Website Development</option>
+                    <option>UI/UX Design</option>
+                    <option>AI Automation</option>
+                    <option>SEO Optimization</option>
+                    <option>Social Media Marketing</option>
+                    <option>Branding & Identity</option>
+                    <option>Digital Strategy</option>
+                    <option>Full Digital Package</option>
+                </select>
+            </div>
+            
+            <div class="form-group">
+                <label class="form-label">Project Details</label>
+                <textarea class="form-input" name="message" placeholder="Tell us about your project, goals, and timeline..." required></textarea>
+            </div>
+            
+            <button type="submit" class="cta-btn" id="form-submit-btn">Book A Free Strategy Call →</button>
+        </form>
+    `;
+}
 
-            const formData = new FormData(form);
+function createTerminalContent() {
+    const lines = [
+        { type: 'prompt', cmd: 'narocta --stats' },
+        { type: 'output', text: '─── NAROCTA DIGITAL AGENCY ───────────────' },
+        { type: 'stat', text: 'Projects Completed    ████████████  150+' },
+        { type: 'stat', text: 'Client Satisfaction   ████████████  95%' },
+        { type: 'stat', text: 'Brands Scaled         ████████████  50+' },
+        { type: 'output', text: '' },
+        { type: 'prompt', cmd: 'narocta --stack' },
+        { type: 'output', text: '─── TECH STACK ──────────────────────────' },
+        { type: 'stat', text: 'Frontend  React · Next.js · Svelte' },
+        { type: 'stat', text: 'AI/ML     OpenAI · LangChain' },
+        { type: 'stat', text: 'Cloud     AWS · GCP · Vercel' },
+    ];
 
-            try {
-                const response = await fetch('https://formspree.io/f/mkolgeoe', {
-                    method: 'POST',
-                    body: formData,
-                    headers: {
-                        'Accept': 'application/json'
-                    }
-                });
+    const html = lines.map(l => {
+        if (l.type === 'prompt') return `<div class="terminal-line"><span class="terminal-prompt">narocta@studio:~$</span> <span class="terminal-cmd">${l.cmd}</span></div>`;
+        if (l.type === 'stat') return `<div class="terminal-output"><span class="terminal-stat">${l.text}</span></div>`;
+        return `<div class="terminal-output">${l.text}</div>`;
+    }).join('');
 
-                if (response.ok) {
-                    formMessage.textContent = '✓ Message sent successfully! We\'ll get back to you soon.';
-                    formMessage.classList.add('show', 'success');
-                    form.reset();
-                    submitBtn.textContent = 'Message Sent!';
-                    setTimeout(() => {
-                        submitBtn.textContent = originalText;
-                    }, 3000);
-                } else {
-                    const data = await response.json();
-                    
-                    // Handle field-specific errors
-                    if (data.errors && Array.isArray(data.errors)) {
-                        data.errors.forEach(error => {
-                            const fieldName = error.field;
-                            const feedbackEl = document.getElementById(`error-${fieldName}`);
-                            const inputEl = document.getElementById(`form-${fieldName}`);
-                            
-                            if (feedbackEl) {
-                                feedbackEl.textContent = error.message;
-                                feedbackEl.classList.add('show');
-                            }
-                            if (inputEl) {
-                                inputEl.setAttribute('aria-invalid', 'true');
-                            }
-                        });
-                    } else {
-                        formMessage.textContent = 'Error: ' + (data.message || 'Please check your information and try again.');
-                        formMessage.classList.add('show', 'error');
-                    }
-                    submitBtn.textContent = originalText;
-                }
-            } catch (error) {
-                formMessage.textContent = '✗ Network error. Please check your connection and try again.';
-                formMessage.classList.add('show', 'error');
-                submitBtn.textContent = originalText;
-            } finally {
-                submitBtn.disabled = false;
+    return `
+        <div class="service-header">
+            <div class="service-icon-lg">⌨️</div>
+            <div>
+                <div class="service-title">Terminal</div>
+                <div class="service-subtitle">NaroctaOS v3.1.0</div>
+            </div>
+        </div>
+        <div class="glass-divider"></div>
+        <div class="terminal">${html}</div>
+    `;
+}
+
+function createServicesContent() {
+    const list = Object.entries(services).map(([id, svc]) => `
+        <div class="benefit-card" onclick="openWindow('${id}')" style="cursor:pointer">
+            <div class="benefit-title">${svc.icon} ${svc.title}</div>
+            <div class="benefit-text">${svc.subtitle}</div>
+        </div>
+    `).join('');
+
+    return `
+        <div class="service-header">
+            <div class="service-icon-lg">⚙️</div>
+            <div>
+                <div class="service-title">All Services</div>
+                <div class="service-subtitle">Complete Digital Solutions</div>
+            </div>
+        </div>
+        <div class="glass-divider"></div>
+        <div class="benefits-grid">${list}</div>
+        <button class="cta-btn" onclick="openWindow('contact')">Book A Free Strategy Call →</button>
+    `;
+}
+
+// SNAKE GAME (Optimized)
+function createSnakeContent() {
+    return `
+        <div class="snake-container">
+            <div class="snake-header">
+                <div style="font-weight:700;color:#60A5FA">NAROCTA</div>
+                <div class="snake-score">
+                    <span style="color:#94a3b8">SCORE</span> <span id="snake-score">000</span><br>
+                    <span style="color:#94a3b8;font-size:0.62rem">HIGH</span> <span id="snake-highscore">${state.snakeHighScore.toString().padStart(3,'0')}</span>
+                </div>
+            </div>
+            
+            <div style="position:relative;width:320px;height:320px;">
+                <canvas id="snake-canvas" width="320" height="320" class="snake-canvas"></canvas>
+                
+                <div id="snake-start-screen" class="snake-start-screen">
+                    <div class="snake-logo">NAROCTA</div>
+                    <div style="font-size:1.1rem;color:#60A5FA;font-weight:700;margin-bottom:0.4rem">SNAKE</div>
+                    <div class="snake-instructions">
+                        Arrow keys or swipe to move.<br>
+                        Eat blue orbs. Avoid walls &amp; yourself.
+                    </div>
+                    <button onclick="startSnakeGame()" class="snake-btn" style="margin-top:1.1rem;padding:0.55rem 1.85rem">START GAME</button>
+                </div>
+            </div>
+            
+            <div class="snake-controls">
+                <button onclick="resetSnakeGame()" class="snake-btn">Reset</button>
+                <button onclick="pauseSnakeGame()" class="snake-btn">Pause</button>
+            </div>
+        </div>
+    `;
+}
+
+function initSnakeGame() {
+    const canvas = document.getElementById('snake-canvas');
+    if (!canvas) return null;
+
+    const ctx = canvas.getContext('2d');
+    const gridSize = 20;
+    const tileCount = 16;
+
+    let snake = [{x: 8, y: 8}];
+    let velocity = {x: 1, y: 0};
+    let food = {x: 12, y: 9};
+    let score = 0;
+    let interval = null;
+    let paused = false;
+    let gameOverState = false;
+
+    function draw() {
+        ctx.fillStyle = '#0a1628';
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+        // Grid
+        ctx.strokeStyle = 'rgba(59,130,246,0.08)';
+        ctx.lineWidth = 1;
+        for (let i = 0; i <= tileCount; i++) {
+            ctx.beginPath();
+            ctx.moveTo(i * gridSize, 0);
+            ctx.lineTo(i * gridSize, canvas.height);
+            ctx.stroke();
+            ctx.beginPath();
+            ctx.moveTo(0, i * gridSize);
+            ctx.lineTo(canvas.width, i * gridSize);
+            ctx.stroke();
+        }
+
+        // Snake
+        ctx.fillStyle = '#3B82F6';
+        for (let i = 0; i < snake.length; i++) {
+            ctx.fillRect(snake[i].x * gridSize + 1, snake[i].y * gridSize + 1, gridSize - 2, gridSize - 2);
+            if (i === 0) {
+                ctx.fillStyle = '#60A5FA';
+                ctx.fillRect(snake[i].x * gridSize + 3, snake[i].y * gridSize + 3, gridSize - 6, gridSize - 6);
+                ctx.fillStyle = '#3B82F6';
             }
+        }
+
+        // Food
+        ctx.shadowBlur = 10;
+        ctx.shadowColor = '#60A5FA';
+        ctx.fillStyle = '#60A5FA';
+        ctx.beginPath();
+        ctx.arc(food.x * gridSize + gridSize/2, food.y * gridSize + gridSize/2, gridSize/2 - 2, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.shadowBlur = 0;
+
+        // Border
+        ctx.strokeStyle = '#3B82F6';
+        ctx.lineWidth = 3;
+        ctx.strokeRect(1, 1, canvas.width - 2, canvas.height - 2);
+    }
+
+    function update() {
+        if (paused || gameOverState) return;
+
+        const head = {x: snake[0].x + velocity.x, y: snake[0].y + velocity.y};
+
+        // Wall collision
+        if (head.x < 0 || head.x >= tileCount || head.y < 0 || head.y >= tileCount) {
+            endGame();
+            return;
+        }
+
+        // Self collision
+        for (let i = 0; i < snake.length; i++) {
+            if (head.x === snake[i].x && head.y === snake[i].y) {
+                endGame();
+                return;
+            }
+        }
+
+        snake.unshift(head);
+
+        if (head.x === food.x && head.y === food.y) {
+            score += 10;
+            document.getElementById('snake-score').textContent = score.toString().padStart(3, '0');
+            
+            let newFood;
+            do {
+                newFood = { x: Math.floor(Math.random() * tileCount), y: Math.floor(Math.random() * tileCount) };
+            } while (snake.some(s => s.x === newFood.x && s.y === newFood.y));
+            food = newFood;
+        } else {
+            snake.pop();
+        }
+
+        draw();
+    }
+
+    function endGame() {
+        gameOverState = true;
+        clearInterval(interval);
+
+        if (score > state.snakeHighScore) {
+            state.snakeHighScore = score;
+            localStorage.setItem('naroctaSnakeHighScore', score);
+            const highEl = document.getElementById('snake-highscore');
+            if (highEl) highEl.textContent = score.toString().padStart(3, '0');
+        }
+
+        const container = canvas.parentNode;
+        const overlay = document.createElement('div');
+        overlay.style.cssText = 'position:absolute;inset:0;background:rgba(8,8,16,0.88);display:flex;flex-direction:column;align-items:center;justify-content:center;border-radius:8px;z-index:20';
+        overlay.innerHTML = `
+            <div style="font-size:1.3rem;color:#60A5FA;font-weight:900;margin-bottom:0.35rem">GAME OVER</div>
+            <div style="margin-bottom:1rem;font-size:0.95rem">Score: <span style="color:#3B82F6;font-weight:700">${score}</span></div>
+            <button onclick="restartSnakeGame(this)" class="snake-btn" style="padding:0.5rem 1.5rem">PLAY AGAIN</button>
+        `;
+        container.appendChild(overlay);
+    }
+
+    function changeDir(dir) {
+        if (paused || gameOverState) return;
+        if (dir === 'up' && velocity.y !== 1) velocity = {x: 0, y: -1};
+        else if (dir === 'down' && velocity.y !== -1) velocity = {x: 0, y: 1};
+        else if (dir === 'left' && velocity.x !== 1) velocity = {x: -1, y: 0};
+        else if (dir === 'right' && velocity.x !== -1) velocity = {x: 1, y: 0};
+    }
+
+    function handleKey(e) {
+        if (!canvas.parentNode) return;
+        switch(e.key) {
+            case 'ArrowUp': changeDir('up'); break;
+            case 'ArrowDown': changeDir('down'); break;
+            case 'ArrowLeft': changeDir('left'); break;
+            case 'ArrowRight': changeDir('right'); break;
+            case ' ': e.preventDefault(); pauseSnakeGame(); break;
+        }
+    }
+
+    let touchStartX = 0, touchStartY = 0;
+    function touchStart(e) { 
+        touchStartX = e.touches[0].clientX; 
+        touchStartY = e.touches[0].clientY; 
+    }
+    function touchEnd(e) {
+        const dx = e.changedTouches[0].clientX - touchStartX;
+        const dy = e.changedTouches[0].clientY - touchStartY;
+        if (Math.abs(dx) > Math.abs(dy)) {
+            if (dx > 0) changeDir('right'); else changeDir('left');
+        } else {
+            if (dy > 0) changeDir('down'); else changeDir('up');
+        }
+    }
+
+    document.addEventListener('keydown', handleKey);
+    canvas.addEventListener('touchstart', touchStart, {passive: true});
+    canvas.addEventListener('touchend', touchEnd);
+
+    snakeGame = {
+        canvas, ctx, update, draw, changeDir,
+        cleanup: () => {
+            document.removeEventListener('keydown', handleKey);
+            clearInterval(interval);
+        },
+        start: () => {
+            if (!interval) {
+                interval = setInterval(update, 135);
+            }
+        },
+        pause: () => { paused = !paused; },
+        reset: () => {
+            snake = [{x: 8, y: 8}];
+            velocity = {x: 1, y: 0};
+            food = {x: 12, y: 9};
+            score = 0;
+            paused = false;
+            gameOverState = false;
+            document.getElementById('snake-score').textContent = '000';
+        }
+    };
+
+    draw();
+    return snakeGame;
+}
+
+function startSnakeGame() {
+    const startScreen = document.getElementById('snake-start-screen');
+    if (startScreen) startScreen.style.display = 'none';
+
+    if (!snakeGame) snakeGame = initSnakeGame();
+    if (snakeGame) snakeGame.start();
+}
+
+function pauseSnakeGame() {
+    if (!snakeGame) return;
+    snakeGame.pause();
+}
+
+function resetSnakeGame() {
+    if (snakeGame) snakeGame.cleanup();
+    snakeGame = null;
+    
+    const container = document.getElementById('snake-canvas').parentNode;
+    const startScreen = document.getElementById('snake-start-screen');
+    
+    container.querySelectorAll('div[style*="position:absolute"]').forEach(el => el.remove());
+    
+    if (startScreen) startScreen.style.display = 'flex';
+    
+    const scoreEl = document.getElementById('snake-score');
+    if (scoreEl) scoreEl.textContent = '000';
+}
+
+function restartSnakeGame(el) {
+    el.parentNode.remove();
+    resetSnakeGame();
+    setTimeout(() => {
+        const startScreen = document.getElementById('snake-start-screen');
+        if (startScreen) startScreen.style.display = 'none';
+        snakeGame = initSnakeGame();
+        if (snakeGame) snakeGame.start();
+    }, 60);
+}
+
+// FORMSPREE CONTACT FORM HANDLER
+function setupContactForm() {
+    const form = document.getElementById('contact-form');
+    if (!form) return;
+
+    const successMsg = document.getElementById('form-success');
+    const errorMsg = document.getElementById('form-error');
+    const submitBtn = document.getElementById('form-submit-btn');
+
+    form.addEventListener('submit', async function(e) {
+        e.preventDefault();
+        
+        // Hide previous messages
+        if (successMsg) successMsg.style.display = 'none';
+        if (errorMsg) errorMsg.style.display = 'none';
+        
+        // Disable button during submission
+        if (submitBtn) {
+            submitBtn.disabled = true;
+            submitBtn.textContent = 'Sending...';
+        }
+
+        const formData = new FormData(form);
+
+        try {
+            const response = await fetch(form.action, {
+                method: 'POST',
+                body: formData,
+                headers: {
+                    'Accept': 'application/json'
+                }
+            });
+
+            if (response.ok) {
+                // Success
+                if (successMsg) successMsg.style.display = 'block';
+                form.reset();
+                
+                // Auto close window after success
+                setTimeout(() => {
+                    const win = document.getElementById('win-contact');
+                    if (win) {
+                        win.style.animation = 'windowClose 0.2s forwards';
+                        setTimeout(() => {
+                            win.remove();
+                            state.openWindows.delete('contact');
+                            if (state.activeWindow === 'contact') state.activeWindow = null;
+                        }, 180);
+                    }
+                }, 2200);
+            } else {
+                throw new Error('Form submission failed');
+            }
+        } catch (error) {
+            // Error handling
+            if (errorMsg) errorMsg.style.display = 'block';
+            console.error('Formspree error:', error);
+        } finally {
+            if (submitBtn) {
+                submitBtn.disabled = false;
+                submitBtn.textContent = 'Book A Free Strategy Call →';
+            }
+        }
+    });
+}
+
+// NOTIFICATIONS
+function showNotification(title, text) {
+    const container = document.getElementById('os-desktop');
+    if (!container) return;
+
+    const notif = document.createElement('div');
+    notif.className = 'os-notification';
+    notif.innerHTML = `<div class="notif-title">${title}</div><div class="notif-text">${text}</div>`;
+    container.appendChild(notif);
+
+    setTimeout(() => {
+        notif.style.transition = 'opacity 0.3s ease';
+        notif.style.opacity = '0';
+        setTimeout(() => notif.remove(), 280);
+    }, 3800);
+}
+
+// CONTEXT MENU
+document.addEventListener('DOMContentLoaded', () => {
+    const desktop = document.getElementById('os-desktop');
+    const ctxMenu = document.getElementById('context-menu');
+
+    if (desktop && ctxMenu) {
+        desktop.addEventListener('contextmenu', e => {
+            if (e.target.closest('.app-window') || e.target.closest('.desktop-icon') || e.target.closest('.os-menubar') || e.target.closest('.os-taskbar')) return;
+            e.preventDefault();
+            const frame = document.getElementById('monitor-frame');
+            const rect = frame.getBoundingClientRect();
+            ctxMenu.style.left = (e.clientX - rect.left) + 'px';
+            ctxMenu.style.top = (e.clientY - rect.top) + 'px';
+            ctxMenu.classList.add('visible');
         });
 
-        // EXISTING APP WINDOW LOGIC (Keep your existing JavaScript code here)
-        // ... rest of your JavaScript code for the retro PC interface
-    </script>
-</body>
+        document.addEventListener('click', () => {
+            ctxMenu.classList.remove('visible');
+        });
+    }
+});
+
+// MUTE
+function toggleMute() {
+    state.muted = !state.muted;
+    const btn = document.getElementById('mute-btn');
+    btn.textContent = state.muted ? '🔇 Muted' : '🔊 Sound';
+}
+
+// OPEN FROM TOP NAV
+function openIconWindow(id) {
+    if (!state.monitorOpen) {
+        openMonitorUI();
+        setTimeout(() => openWindow(id), 480);
+    } else {
+        openWindow(id);
+    }
+}
+
+// LOADING & BOOT
+function runLoadingSequence() {
+    const bar = document.getElementById('loading-bar');
+    const text = document.getElementById('loading-text');
+    const msgs = ['Initializing system...', 'Loading 3D engine...', 'Building workstation...', 'Calibrating lighting...', 'NaroctaOS ready.'];
+
+    let progress = 0;
+    let idx = 0;
+
+    const int = setInterval(() => {
+        progress += Math.random() * 17 + 3;
+        if (progress > 100) progress = 100;
+        bar.style.width = progress + '%';
+        idx = Math.min(Math.floor(progress / 18), msgs.length - 1);
+        text.textContent = msgs[idx];
+
+        if (progress >= 100) {
+            clearInterval(int);
+            setTimeout(runBootSequence, 550);
+        }
+    }, 115);
+}
+
+function runBootSequence() {
+    const load = document.getElementById('loading-screen');
+    load.style.opacity = '0';
+    setTimeout(() => load.style.display = 'none', 700);
+
+    const boot = document.getElementById('boot-screen');
+    boot.style.opacity = '1';
+    boot.style.pointerEvents = 'all';
+
+    const linesContainer = document.getElementById('boot-lines');
+    const bootLines = [
+        'NaroctaOS v3.1.0 (Premium Edition)',
+        'Loading kernel modules...',
+        'Initializing display driver... OK',
+        'Mounting digital workspace... OK',
+        'Loading agency services... OK',
+        'Starting 3D renderer... OK',
+        '',
+        'Welcome to NAROCTA Digital Agency.',
+        'Launching desktop environment...'
+    ];
+
+    let i = 0;
+    const addLine = () => {
+        if (i >= bootLines.length) {
+            setTimeout(() => {
+                boot.style.opacity = '0';
+                setTimeout(() => {
+                    boot.style.display = 'none';
+                    startMainExperience();
+                }, 550);
+            }, 720);
+            return;
+        }
+
+        const div = document.createElement('div');
+        div.className = 'boot-line';
+        div.textContent = bootLines[i];
+        div.style.animation = 'fadeInUp 0.28s ease forwards';
+        linesContainer.appendChild(div);
+        i++;
+        setTimeout(addLine, i < 7 ? 135 : 195);
+    };
+
+    setTimeout(addLine, 380);
+}
+
+function startMainExperience() {
+    initThreeJS();
+
+    const ui = document.getElementById('ui-overlay');
+    setTimeout(() => ui.classList.add('visible'), 480);
+
+    state.loaded = true;
+}
+
+// INIT
+window.addEventListener('load', () => {
+    // Three.js is already included via CDN script tag
+    runLoadingSequence();
+});
+
+// Refresh helper
+function refreshDesktop() {
+    const ctx = document.getElementById('context-menu');
+    if (ctx) ctx.classList.remove('visible');
+
+    const desktop = document.getElementById('os-desktop');
+    if (desktop) {
+        desktop.style.transition = 'opacity .1s';
+        desktop.style.opacity = '0.55';
+        setTimeout(() => {
+            desktop.style.transition = '';
+            desktop.style.opacity = '1';
+        }, 160);
+    }
+}
+</script>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'a106117cf851f148',t:'MTc4MjI0NDcxNQ=='};var a=document.createElement('script');a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 </html>
